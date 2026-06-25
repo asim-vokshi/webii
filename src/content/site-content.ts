@@ -63,45 +63,8 @@ export const schoolInfo = {
 };
 
 // =============================================================================
-// IMAGES
-// =============================================================================
-
-export const siteImages = {
-  building_front:
-    "/images/building_front.jpeg",
-  class_interactive:
-    "/images/class_interactive.jpeg",
-  students_group1:
-    "/images/students_group1.jpeg",
-  students_group2:
-    "/images/students_group2.jpeg",
-  ceremony:
-    "/images/ceremony.jpeg",
-  activity_hall:
-    "/images/activity_hall.jpeg",
-  teachers_historical:
-    "/images/teachers_historical.jpeg",
-  students_activity:
-    "/images/students_activity.jpeg",
-  sports:
-    "/images/sports.jpeg",
-  last_bell:
-    "/images/WhatsApp_Image_2026-06-25_at_15.17.01.jpeg",
-  last_bell_2:
-    "/images/extra6.jpeg",
-  last_bell_3:
-    "/images/extra7.jpeg",
-};
-
-// =============================================================================
 // STATIC DATA
 // =============================================================================
-
-const daysAgo = (days: number) => {
-  const d = new Date();
-  d.setDate(d.getDate() - days);
-  return d.toISOString();
-};
 
 export const newsItems: NewsItem[] = [];
 
@@ -163,7 +126,7 @@ export const staffDepartments = Array.from(new Set(staffItems.map((s) => s.depar
 // SELECTORS
 // =============================================================================
 
-export function getNewsList(params: GetNewsParams = {}): NewsListResponse {
+export function getNewsList(params: NewsListParams = {}): NewsListResponse {
   const { search, category, page = 1, limit = 9 } = params;
 
   let items = [...newsItems];
@@ -198,7 +161,7 @@ export function getNewsList(params: GetNewsParams = {}): NewsListResponse {
   };
 }
 
-export function getStaffList(params: GetStaffParams = {}): StaffListResponse {
+export function getStaffList(params: StaffListParams = {}): StaffListResponse {
   const { search, department } = params;
   let items = [...staffItems];
 
