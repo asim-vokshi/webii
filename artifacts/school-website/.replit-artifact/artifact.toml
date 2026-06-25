@@ -15,11 +15,11 @@ paths = [ "/" ]
 localPort = 21294
 
 [services.development]
-run = "pnpm --filter @workspace/school-website run dev"
+run = "npm run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/school-website", "run", "build" ]
-publicDir = "artifacts/school-website/dist/public"
+build = [ "npm", "run", "build" ]
+publicDir = "dist"
 serve = "static"
 
 [[services.production.rewrites]]
