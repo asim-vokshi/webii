@@ -7,25 +7,24 @@ export function Preloader() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const duration = 1800; // 1.8s loading
-    const start = performance.now();
+    const duration = 1800;
+    const interval = 16; // ~60fps equivalent
+    const steps = duration / interval;
+    let step = 0;
 
-    const tick = (now: number) => {
-      const elapsed = now - start;
-      const t = Math.min(1, elapsed / duration);
-      
-      // Custom easing for progress
+    const timer = setInterval(() => {
+      step++;
+      const t = Math.min(1, step / steps);
       const ease = 1 - Math.pow(1 - t, 4);
       setProgress(Math.round(ease * 100));
 
-      if (t < 1) {
-        requestAnimationFrame(tick);
-      } else {
+      if (t >= 1) {
+        clearInterval(timer);
         setTimeout(() => setLoading(false), 300);
       }
-    };
+    }, interval);
 
-    requestAnimationFrame(tick);
+    return () => clearInterval(timer);
   }, []);
 
   return (
