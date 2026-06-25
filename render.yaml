@@ -2,6 +2,8 @@
 # Deploys as a Web Service that builds the static bundle and serves it
 # with SPA fallback via a tiny zero-dependency Node server (server.js).
 #
+# Uses npm (not pnpm/corepack) to avoid corepack signature-key issues on CI.
+#
 # To use: in Render dashboard -> "New +" -> "Blueprint" -> pick this repo.
 services:
   - type: web
@@ -11,8 +13,8 @@ services:
     region: frankfurt          # closest region to Albania; change if you prefer
     branch: main
     autoDeploy: true
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm run build
-    startCommand: pnpm run start
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
     healthCheckPath: /
     envVars:
       - key: NODE_VERSION

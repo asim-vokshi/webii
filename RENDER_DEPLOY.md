@@ -5,6 +5,9 @@ of its own. You asked to publish it on Render **as a Web Service**, so this
 guide covers that path (Option B). A simpler Static Site path is also included
 (Option A) in case you want it later.
 
+> The build uses **npm** (not pnpm/corepack). This avoids the corepack
+> "Cannot find matching keyid" signature error that can break CI builds.
+
 The repository already contains everything you need:
 
 - `server.js` — a tiny, zero-dependency Node server that serves the built
@@ -12,7 +15,8 @@ The repository already contains everything you need:
   to `index.html` for client-side routes.
 - `render.yaml` — a Render Blueprint that configures the Web Service
   automatically.
-- `npm`/`pnpm` scripts: `build` (produces `dist/`) and `start` (runs the server).
+- `package-lock.json` — committed lockfile so `npm ci` installs deterministically.
+- npm scripts: `build` (produces `dist/`) and `start` (runs the server).
 
 ---
 
@@ -40,8 +44,8 @@ In Render, click **New +** → **Web Service**, connect the repo, then use these
 | **Language / Runtime** | `Node` |
 | **Region** | `Frankfurt (EU Central)` *(closest to Albania; optional)* |
 | **Instance Type** | `Free` (or a paid tier to avoid cold starts) |
-| **Build Command** | `corepack enable && pnpm install --frozen-lockfile && pnpm run build` |
-| **Start Command** | `pnpm run start` |
+| **Build Command** | `npm ci && npm run build` |
+| **Start Command** | `npm run start` |
 | **Health Check Path** | `/` |
 | **Auto-Deploy** | `Yes` (deploys on every push to `main`) |
 
@@ -53,14 +57,6 @@ In Render, click **New +** → **Web Service**, connect the repo, then use these
 
 > You do **not** need to set `PORT`. Render injects `PORT` automatically and
 > `server.js` reads it. Do not hard-code a port.
-
-#### Prefer npm instead of pnpm?
-
-This project is configured for **pnpm** (see `pnpm-lock.yaml`). If you would
-rather use npm, use these commands instead and delete `pnpm-lock.yaml`:
-
-- **Build Command:** `npm install && npm run build`
-- **Start Command:** `npm run start`
 
 ---
 
@@ -74,7 +70,7 @@ In Render, click **New +** → **Static Site**, connect the repo, then:
 | Setting | Value |
 | --- | --- |
 | **Branch** | `main` |
-| **Build Command** | `corepack enable && pnpm install --frozen-lockfile && pnpm run build` |
+| **Build Command** | `npm ci && npm run build` |
 | **Publish Directory** | `dist` |
 
 **Add a rewrite rule** so client-side routes work (e.g. `/stafi`, `/lajme`):
@@ -96,6 +92,17 @@ After the service is live:
 2. Enter your domain (e.g. `www.shavokshi.edu.al`).
 3. Add the CNAME / A records Render shows you at your DNS provider.
 4. Render provisions a free TLS certificate automatically.
+
+---
+
+## Local development
+
+```bash
+npm install      # install dependencies
+npm run dev      # dev server at http://localhost:5173
+npm run build    # production build -> dist/
+npm run start    # serve the production build (uses PORT or 10000)
+```
 
 ---
 
