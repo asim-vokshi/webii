@@ -1,0 +1,19 @@
+# Render Blueprint for the Asim Vokshi school website (Vite + React SPA).
+# Deploys as a Web Service that builds the static bundle and serves it
+# with SPA fallback via a tiny zero-dependency Node server (server.js).
+#
+# To use: in Render dashboard -> "New +" -> "Blueprint" -> pick this repo.
+services:
+  - type: web
+    name: asim-vokshi-website
+    runtime: node
+    plan: free
+    region: frankfurt          # closest region to Albania; change if you prefer
+    branch: main
+    autoDeploy: true
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm run build
+    startCommand: pnpm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22.13.0"
